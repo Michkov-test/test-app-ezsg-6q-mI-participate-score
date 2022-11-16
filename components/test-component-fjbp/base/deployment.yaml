@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/created-by: application-service
+    app.kubernetes.io/instance: test-component-fjbp
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: test-component-fjbp
+    app.kubernetes.io/part-of: test-app-ezsg
+  name: test-component-fjbp
+  namespace: build-e2e-hacbs-ffse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: test-component-fjbp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: test-component-fjbp
+    spec:
+      containers:
+      - image: quay.io/mkovarik/test-images:5df9fa78c7064e439e26b7172ab079eb
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        name: container-image
+        ports:
+        - containerPort: 8081
+        readinessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          tcpSocket:
+            port: 8081
+        resources: {}
+status: {}
